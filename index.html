@@ -420,8 +420,8 @@
                     </div>
                     <label class="sb-label">Model Backend</label>
                     <select id="modelSelect" class="sb-select">
-                        <option value="local" selected>Local &mdash; llama3.2:3b</option>
-                        <option value="azure">Azure GPT</option>
+                        <option value="local">Local &mdash; llama3.2:3b</option>
+                        <option value="azure" selected>Azure GPT</option>
                     </select>
                 </div>
             </div>
@@ -617,15 +617,20 @@ If asked what model: "I run on local AI and PURE CULINARY FURY. MOVE IT — what
         }
 
         // ── Session start ──
-        function startChatSession(user) {
-            currentUser = user;
-            document.getElementById('upName').textContent = user.name;
-            document.getElementById('upId').textContent   = 'ID: ' + user.studentId;
-            showPage('chat');
-            setMode('regular');
-            document.getElementById('userInput').focus();
-            checkOllamaStatus();
-        }
+       function startChatSession(user) {
+    currentUser = user;
+    document.getElementById('upName').textContent = user.name;
+    document.getElementById('upId').textContent   = 'ID: ' + user.studentId;
+    showPage('chat');
+    setMode('regular');
+    document.getElementById('userInput').focus();
+
+    // 추가: 선택된 백엔드가 local일 때만 Ollama 체크 진행
+    const backend = document.getElementById('modelSelect').value;
+    if (backend === 'local') {
+        checkOllamaStatus();
+    }
+}
 
         // ── Ollama check ──
         async function checkOllamaStatus() {
